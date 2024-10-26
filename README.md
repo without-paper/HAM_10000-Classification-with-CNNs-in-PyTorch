@@ -11,10 +11,10 @@ This project aims to investigate how the size of the dataset and the complexity 
 - **Dataset**: HAM10000
 - **Programming Language**: Python 3.8
 - **Deep Learning Frameworks**:
-  - PyTorch
-  - torchaudio-2.1.2+cu121-cp38
-  - torch-2.1.2+cu121-cp38
-  - torchvision-0.16.2+cu121-cp38
+  - PyTorch:
+    - torchaudio-2.1.2+cu121-cp38
+    - torch-2.1.2+cu121-cp38
+    - torchvision-0.16.2+cu121-cp38
 - **Models**: 
   - AlexNet
   - ResNet (18, 34, 50, 101, 152)
