@@ -7,17 +7,24 @@ Skin cancer is a major global health issue, with early detection being critical 
 Project Aim:
 This project aims to investigate how the size of the dataset and the complexity of neural network models influence the accuracy of skin cancer image classification. By understanding the interplay between dataset scale and model architecture, the project seeks to offer healthcare professionals better automated tools for skin cancer detection, potentially alleviating the burden on dermatologists and improving patient outcomes.
 
-Technologies and Tools: 
-- Dataset: HAM10000 dataset for training and testing [1][2]
-- Python 3.8
-- PyTorch
+## Technologies and Tools
+- **Dataset**: HAM10000
+- **Programming Language**: Python 3.8
+- **Deep Learning Frameworks**:
+  - PyTorch
   - torchaudio-2.1.2+cu121-cp38
   - torch-2.1.2+cu121-cp38
   - torchvision-0.16.2+cu121-cp38
-- Models: AlexNet, ResNet(18,34,50,101,152), ViT(Base), MLP-Mixer(B/16)
+- **Models**: 
+  - AlexNet
+  - ResNet (18, 34, 50, 101, 152)
+  - ViT (Base)
+  - MLP-Mixer (B/16)
 
 Conclusion:
+![Accuracies](plots/100%accuracies.jpg)
 This study investigated the performance of eight deep neural networks in skin cancer image classification. The results on the HAM10000 dataset demonstrated that, the complex interplay between data size, model complexity, and computational costs, validated the effectiveness of neural scaling laws in this problem. The models were trained on datasets ranging from 1% to 100%, with the highest average accuracy of 85.09% when the dataset size was 5% (1002 images). Notably, ResNet101 trained with 100% dataset and ResNet152 trained with 5% dataset obtained the highest accuracy of 90.07% and 90.02% respectively. Our experimental results suggest that the dataset size and model complexity both significantly affect performance. For example, ResNet101 and ResNet152 achieved higher accuracy on larger datasets. In contrast, AlexNet, ViT, and MLP-Mixer performed best on smaller datasets. By understanding the impact of dataset size and model complexity, researchers can develop more efficient and accurate skin cancer classification methods. Overall, this study promotes advances in skin cancer classification methods that have the potential to improve healthcare outcomes and reduce the burden on healthcare professionals. 
 
-[1] Noel Codella, Veronica Rotemberg, Philipp Tschandl, M. Emre Celebi, Stephen Dusza, David Gutman, Brian Helba, Aadi Kalloo, Konstantinos Liopyris, Michael Marchetti, Harald Kittler, Allan Halpern: "Skin Lesion Analysis Toward Melanoma Detection 2018: A Challenge Hosted by the International Skin Imaging Collaboration (ISIC)", 2018; https://arxiv.org/abs/1902.03368
-[2] Tschandl, P., Rosendahl, C. & Kittler, H. The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions. Sci. Data 5, 180161 doi:10.1038/sdata.2018.161 (2018).
+## References
+1. Codella, N., Rotemberg, V., Tschandl, P., et al. "Skin Lesion Analysis Toward Melanoma Detection 2018: A Challenge Hosted by the International Skin Imaging Collaboration (ISIC)", 2018. [arXiv](https://arxiv.org/abs/1902.03368)
+2. Tschandl, P., Rosendahl, C., & Kittler, H. "The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions". Sci. Data 5, 180161. [DOI](https://doi.org/10.1038/sdata.2018.161) (2018).
