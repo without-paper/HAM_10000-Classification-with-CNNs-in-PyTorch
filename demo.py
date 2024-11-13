@@ -3,13 +3,23 @@ import random
 import torch
 from torchvision import transforms
 from PIL import Image
-from models.ResNet_model101 import ResNet101  # Import your model definition
-import matplotlib.pyplot as plt  # Import for displaying images
+from flask import Flask, render_template, request, send_from_directory
+from models.ResNet_model101 import ResNet101
 import warnings
+from werkzeug.utils import secure_filename
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", message=".*pretrained.*")
 warnings.filterwarnings("ignore", message=".*Arguments other than a weight enum.*")
+
+# Flask app setup
+app = Flask(__name__, template_folder="templates", static_folder="eval")  # Set static_folder to 'eval'
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+# Function to check allowed image extensions
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Load model architecture
 device = torch.device("cpu")
@@ -47,7 +57,9 @@ def get_random_images():
         img_folder = os.path.join(test_path, category)
         img_name = random.choice(os.listdir(img_folder))  # Randomly select an image
         img_path = os.path.join(img_folder, img_name)
-        images.append((img_path, category))
+
+        real_category_name = class_names.get(category, "Unknown Category")
+        images.append((img_path, real_category_name))
     return images
 
 # Predict the class of an image
@@ -60,55 +72,49 @@ def predict_image(img_path):
         _, predicted = torch.max(output, 1)
     return list(class_names.values())[predicted.item()]
 
-# Run demo
-def run_demo():
-    while True:
-        images = get_random_images()
+# Home route to display images and buttons
+@app.route("/", methods=["GET", "POST"])
+def home():
+    images = get_random_images()
+    selected_img_path = None
+    real_category_name = None
+    predicted_category = None
+    feedback = None
 
-        # Display the selected four images with real labels
-        print("Please select an image:")
-        for idx, (img_path, category) in enumerate(images):
-            img = Image.open(img_path)
-            plt.imshow(img)
-            plt.axis('off')
-            plt.title(f"Image {idx + 1} - {class_names[category]}")
-            plt.show()
-            # Use class_names dictionary to map folder name to full name
-            print(f"{idx + 1}. Real Type: {class_names[category]}")
+    if request.method == "POST":
+        # Handle when user uploads their own image
+        if 'image_file' in request.files:
+            file = request.files['image_file']
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_path = os.path.join('uploads', filename)
+                file.save(file_path)
+
+                # Get the real category from the user input
+                real_category_name = request.form.get('real_category')
+
+                # Predict the uploaded image's category
+                predicted_category = predict_image(file_path)
+                feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
+
+        # Handle when user chooses an image from the pre-loaded images (optional, only if they want to)
+        elif 'image_choice' in request.form:
+            choice = int(request.form["image_choice"])  # Get selected image index
+            selected_img_path, real_category_name = images[choice]  # Get real category name
+            predicted_category = predict_image(selected_img_path)
+            feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
+
+    # Convert image paths to URLs for web display
+    image_urls = [f"/eval/{os.path.basename(os.path.dirname(img[0]))}/{os.path.basename(img[0])}" for img in images]
+
+    return render_template("index.html", images=images, image_urls=image_urls, feedback=feedback,
+                           real_category=real_category_name, predicted_category=predicted_category)
 
 
-        choice = -1  # Initialize with an invalid choice
-        while choice not in [1, 2, 3, 4]:
-            try:
-                choice = int(input("Choose the image number (1-4) for model classification: "))
-                if choice not in [1, 2, 3, 4]:
-                    print("Invalid choice. Please enter a number between 1 and 4.")
-            except ValueError:
-                print("Invalid input. Please enter a valid integer between 1 and 4.")
-
-        choice -= 1  # Adjust to 0-based index
-
-
-        selected_img_path, real_category = images[choice]
-
-        # Print real category
-        print(f"Real Category is: {class_names[real_category]}")
-
-        # Model prediction
-        predicted_category = predict_image(selected_img_path)
-        print(f"Model Prediction: {predicted_category}")
-
-        # Assess correctness
-        if class_names[real_category] == predicted_category:
-            print("ResNet101: \"Great! I'm glad I'm correct :)\"")
-        else:
-            print("ResNet101: \"Oops :( I hope I can do better next time\"")
-
-        # Continue or exit
-        continue_choice = input("Would you like to continue? (y/n): ")
-        if continue_choice.lower() != 'y':
-            print("Thank you for trying the demo!")
-            break
+# Serve image files directly from eval folder
+@app.route("/eval/<folder>/<filename>")
+def serve_image(folder, filename):
+    return send_from_directory(os.path.join('eval', folder), filename)
 
 if __name__ == "__main__":
-    run_demo()
+    app.run(debug=True)

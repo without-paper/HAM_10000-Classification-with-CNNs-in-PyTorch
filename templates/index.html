@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Cancer Image Classification Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: green;
+        }
+        .feedback.error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Skin Cancer Image Classification Demo</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <!-- Image selection section (optional, will be shown only if needed) -->
+            <div class="image-container">
+                {% for image in image_urls %}
+                    <p>Image {{ loop.index }}</p>
+                    <img src="{{ image }}" alt="Image {{ loop.index }}">
+                    <input type="radio" name="image_choice" value="{{ loop.index0 }}">
+                {% endfor %}
+            </div>
+
+            <!-- Upload image section -->
+            <div class="button-container">
+                <h3>Or Upload Your Own Image</h3>
+                <input type="file" name="image_file" accept="image/*" required><br><br>
+                <label for="real_category">Real Category: </label>
+                <input type="text" id="real_category" name="real_category" placeholder="Enter the real category" required><br><br>
+                <button type="submit">Classify Image</button>
+            </div>
+        </form>
+
+        {% if feedback %}
+        <div class="feedback {% if feedback == 'ResNet101: Oops :( I hope I can do better next time' %}error{% endif %}">
+            <p><strong>Real Category:</strong> {{ real_category }}</p>
+            <p><strong>Prediction:</strong> {{ predicted_category }}</p>
+            <p>{{ feedback }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
