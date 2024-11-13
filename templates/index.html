@@ -164,7 +164,16 @@
                 <h3>Or Upload Your Own Image</h3>
                 <input type="file" name="image_file" accept="image/*"><br><br>
                 <label for="real_category">Real Category: </label>
-                <input type="text" id="real_category" name="real_category" placeholder="Enter the real category"><br><br>
+                <select id="real_category" name="real_category">
+                    <option value="" disabled selected>Select the category</option>
+                    <option value="ACTINIC KERATOSIS">ACTINIC KERATOSIS</option>
+                    <option value="BASAL CELL CARCINOMA">BASAL CELL CARCINOMA</option>
+                    <option value="BENIGN KERATOSIS-LIKE LESIONS">BENIGN KERATOSIS-LIKE LESIONS</option>
+                    <option value="DERMATOFIBROMA">DERMATOFIBROMA</option>
+                    <option value="MELANOMA">MELANOMA</option>
+                    <option value="MELANOCYTIC NEVI">MELANOCYTIC NEVI</option>
+                    <option value="VASCULAR LESIONS">VASCULAR LESIONS</option>
+                </select><br><br>
                 <button type="submit">Classify Image</button>
             </div>
         </form>
@@ -181,20 +190,30 @@
         let selectedImage = null;  // Variable to track the selected image
 
         function selectImage(imgElement) {
-            // Deselect the previously selected image (if any)
-            if (selectedImage !== null) {
-                selectedImage.classList.remove('selected');
+            // If the clicked image is already selected, deselect it
+            if (imgElement === selectedImage) {
+                imgElement.classList.remove('selected');
+                var radioButton = imgElement.nextElementSibling;  // Find the corresponding radio button
+                radioButton.checked = false;
+                selectedImage = null;  // Reset the selected image tracker
+            } else {
+                // Deselect the previously selected image (if any)
+                if (selectedImage !== null) {
+                    selectedImage.classList.remove('selected');
+                    var previousRadioButton = selectedImage.nextElementSibling;
+                    previousRadioButton.checked = false;
+                }
+
+                // Select the clicked image and apply the 'selected' class for the border
+                imgElement.classList.add('selected');
+
+                // Mark the radio button as selected
+                var radioButton = imgElement.nextElementSibling;  // Find the corresponding radio button
+                radioButton.checked = true;
+
+                // Update the selected image tracker
+                selectedImage = imgElement;
             }
-
-            // Select the clicked image and apply the 'selected' class for the border
-            imgElement.classList.add('selected');
-
-            // Mark the radio button as selected
-            var radioButton = imgElement.nextElementSibling;  // Find the corresponding radio button
-            radioButton.checked = true;
-
-            // Update the selected image tracker
-            selectedImage = imgElement;
         }
 
         function validateForm() {
@@ -208,12 +227,13 @@
             }
 
             if (imageFile && !realCategory) {
-                alert("Please enter the real category for the uploaded image.");
+                alert("Please select the real category for the uploaded image.");
                 return false;
             }
 
             return true;
         }
     </script>
+
 </body>
 </html>

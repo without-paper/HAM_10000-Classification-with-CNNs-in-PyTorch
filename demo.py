@@ -97,7 +97,7 @@ def home():
                 file_path = os.path.join('uploads', filename)
                 file.save(file_path)
 
-                # Get the real category from the user input
+                # Get the real category from the user choice
                 real_category_name = request.form.get('real_category')
 
                 if not real_category_name:
