@@ -1,3 +1,7 @@
+## You can run demo.py to interact with our trained model :)
+![demo](plots/demo_html1.jpg)
+![demo](plots/demo_html2.jpg)
+
 # HAM_10000-Classification-with-CNNs-in-PyTorch
 Here is the paper of ths project titled "Image Classification of Skin Cancer Using Deep Neural Networks with Scaling Laws", published in the journal International Journal of Computer Science and Information Technology (ISSN: 3005-9682 eISSN: 3005-7140, DOI: https://doi.org/10.62051/ijcsit.v3n2.12) under the paper ID IJCSIT-6335.
 
@@ -21,9 +25,6 @@ This project aims to investigate how the size of the dataset and the complexity 
   - ViT (Base)
   - MLP-Mixer (B/16)
  
-## You can run demo.py to interact with our trained model :)
-![demo](plots/demo_html.jpg)
-
 ## Conclusion
 ![Accuracies](plots/100losses.jpg)
 ![Losses](plots/100accuracies.jpg)
