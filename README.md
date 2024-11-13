@@ -20,6 +20,9 @@ This project aims to investigate how the size of the dataset and the complexity 
   - ResNet (18, 34, 50, 101, 152)
   - ViT (Base)
   - MLP-Mixer (B/16)
+ 
+## You can run demo.py to interact with our trained model :)
+![demo](plots/demo_html.jpg)
 
 ## Conclusion
 ![Accuracies](plots/100losses.jpg)
