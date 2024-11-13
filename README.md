@@ -1,9 +1,9 @@
+# HAM_10000-Classification-with-CNNs-in-PyTorch
+Here is the paper of ths project titled "Image Classification of Skin Cancer Using Deep Neural Networks with Scaling Laws", published in the journal International Journal of Computer Science and Information Technology (ISSN: 3005-9682 eISSN: 3005-7140, DOI: https://doi.org/10.62051/ijcsit.v3n2.12) under the paper ID IJCSIT-6335.
+
 ## You can run demo.py to interact with our trained model :)
 ![demo](plots/demo_html1.jpg)
 ![demo](plots/demo_html2.jpg)
-
-# HAM_10000-Classification-with-CNNs-in-PyTorch
-Here is the paper of ths project titled "Image Classification of Skin Cancer Using Deep Neural Networks with Scaling Laws", published in the journal International Journal of Computer Science and Information Technology (ISSN: 3005-9682 eISSN: 3005-7140, DOI: https://doi.org/10.62051/ijcsit.v3n2.12) under the paper ID IJCSIT-6335.
 
 ## Problem Statement
 Skin cancer is a major global health issue, with early detection being critical to improving treatment outcomes. However, the current manual process of diagnosing skin cancer through dermoscopy, while useful, is time-consuming, subjective, and limited by the availability of skilled dermatologists. Automated image classification methods using deep learning models have shown promise in enhancing diagnostic accuracy and efficiency, but the relationship between dataset size and model performance remains unclear. Specifically, it is unknown how different neural network architectures perform when trained on varying amounts of data, particularly in real-world scenarios where datasets may be limited or region-specific.
