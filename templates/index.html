@@ -37,12 +37,31 @@
             color: red;
         }
     </style>
+    <script>
+        function validateForm() {
+            var imageChoice = document.querySelector('input[name="image_choice"]:checked');
+            var imageFile = document.querySelector('input[name="image_file"]').files[0];
+            var realCategory = document.getElementById('real_category').value.trim();
+
+            if ((imageChoice && imageFile) || (!imageChoice && !imageFile)) {
+                alert("Please either select an image or upload your own image, but not both.");
+                return false;
+            }
+
+            if (imageFile && !realCategory) {
+                alert("Please enter the real category for the uploaded image.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Skin Cancer Image Classification Demo</h1>
-        <form method="POST" enctype="multipart/form-data">
-            <!-- Image selection section (optional, will be shown only if needed) -->
+        <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <!-- Image selection section -->
             <div class="image-container">
                 {% for image in image_urls %}
                     <p>Image {{ loop.index }}</p>
@@ -54,9 +73,9 @@
             <!-- Upload image section -->
             <div class="button-container">
                 <h3>Or Upload Your Own Image</h3>
-                <input type="file" name="image_file" accept="image/*" required><br><br>
+                <input type="file" name="image_file" accept="image/*"><br><br>
                 <label for="real_category">Real Category: </label>
-                <input type="text" id="real_category" name="real_category" placeholder="Enter the real category" required><br><br>
+                <input type="text" id="real_category" name="real_category" placeholder="Enter the real category"><br><br>
                 <button type="submit">Classify Image</button>
             </div>
         </form>

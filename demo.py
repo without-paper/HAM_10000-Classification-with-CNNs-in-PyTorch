@@ -82,8 +82,15 @@ def home():
     feedback = None
 
     if request.method == "POST":
-        # Handle when user uploads their own image
-        if 'image_file' in request.files:
+        # Check if an image is chosen or a file is uploaded
+        if 'image_choice' in request.form:
+            choice = int(request.form["image_choice"])  # Get selected image index
+            selected_img_path, real_category_name = images[choice]  # Get real category name
+            predicted_category = predict_image(selected_img_path)
+            feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
+
+        elif 'image_file' in request.files:
+            # Handle when user uploads their own image
             file = request.files['image_file']
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
@@ -93,16 +100,12 @@ def home():
                 # Get the real category from the user input
                 real_category_name = request.form.get('real_category')
 
-                # Predict the uploaded image's category
-                predicted_category = predict_image(file_path)
-                feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
-
-        # Handle when user chooses an image from the pre-loaded images (optional, only if they want to)
-        elif 'image_choice' in request.form:
-            choice = int(request.form["image_choice"])  # Get selected image index
-            selected_img_path, real_category_name = images[choice]  # Get real category name
-            predicted_category = predict_image(selected_img_path)
-            feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
+                if not real_category_name:
+                    feedback = "Please enter the real category name for the uploaded image."
+                else:
+                    # Predict the uploaded image's category
+                    predicted_category = predict_image(file_path)
+                    feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
 
     # Convert image paths to URLs for web display
     image_urls = [f"/eval/{os.path.basename(os.path.dirname(img[0]))}/{os.path.basename(img[0])}" for img in images]
