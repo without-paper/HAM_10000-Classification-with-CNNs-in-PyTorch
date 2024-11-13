@@ -5,57 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Cancer Image Classification Demo</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+        /* Reset basic styles */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+
+        /* Body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        /* Container for content */
         .container {
-            width: 80%;
+            width: 90%;
+            max-width: 1000px;
             margin: auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow: hidden;
         }
-        .image-container {
-            display: flex;
-            justify-content: space-around;
+
+        /* Title */
+        h1 {
+            font-size: 2.5em;
+            color: #4CAF50;
             margin-bottom: 20px;
         }
-        .image-container img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
+
+        h3 {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #333;
         }
+
+        /* Image section styling */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            border: 2px solid transparent;  /* Initially no border */
+        }
+
+        .image-container img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Highlight selected image */
+        .image-container img.selected {
+            border: 4px solid black;  /* Border when selected */
+        }
+
+        /* Button Container */
         .button-container {
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        /* Input fields styling */
+        input[type="file"], input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 60%;
+            margin: 10px 0;
+            font-size: 1em;
+        }
+
+        input[type="text"] {
+            width: 50%;
+        }
+
+        /* Classify button styling */
+        button {
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        /* Feedback styling */
         .feedback {
             margin-top: 20px;
             font-size: 1.2em;
-            color: green;
+            color: #4CAF50;
         }
+
         .feedback.error {
             color: red;
         }
-    </style>
-    <script>
-        function validateForm() {
-            var imageChoice = document.querySelector('input[name="image_choice"]:checked');
-            var imageFile = document.querySelector('input[name="image_file"]').files[0];
-            var realCategory = document.getElementById('real_category').value.trim();
 
-            if ((imageChoice && imageFile) || (!imageChoice && !imageFile)) {
-                alert("Please either select an image or upload your own image, but not both.");
-                return false;
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            .image-container {
+                flex-direction: column;
+                align-items: center;
             }
 
-            if (imageFile && !realCategory) {
-                alert("Please enter the real category for the uploaded image.");
-                return false;
+            input[type="file"], input[type="text"] {
+                width: 80%;
             }
 
-            return true;
+            button {
+                width: 80%;
+            }
         }
-    </script>
+    </style>
 </head>
 <body>
     <div class="container">
@@ -64,9 +152,10 @@
             <!-- Image selection section -->
             <div class="image-container">
                 {% for image in image_urls %}
-                    <p>Image {{ loop.index }}</p>
-                    <img src="{{ image }}" alt="Image {{ loop.index }}">
-                    <input type="radio" name="image_choice" value="{{ loop.index0 }}">
+                    <div>
+                        <img src="{{ image }}" alt="Image {{ loop.index }}" onclick="selectImage(this)">
+                        <input type="radio" name="image_choice" value="{{ loop.index0 }}" id="image{{ loop.index0 }}" style="display:none;">
+                    </div>
                 {% endfor %}
             </div>
 
@@ -88,5 +177,43 @@
         </div>
         {% endif %}
     </div>
+    <script>
+        let selectedImage = null;  // Variable to track the selected image
+
+        function selectImage(imgElement) {
+            // Deselect the previously selected image (if any)
+            if (selectedImage !== null) {
+                selectedImage.classList.remove('selected');
+            }
+
+            // Select the clicked image and apply the 'selected' class for the border
+            imgElement.classList.add('selected');
+
+            // Mark the radio button as selected
+            var radioButton = imgElement.nextElementSibling;  // Find the corresponding radio button
+            radioButton.checked = true;
+
+            // Update the selected image tracker
+            selectedImage = imgElement;
+        }
+
+        function validateForm() {
+            var imageChoice = document.querySelector('input[name="image_choice"]:checked');
+            var imageFile = document.querySelector('input[name="image_file"]').files[0];
+            var realCategory = document.getElementById('real_category').value.trim();
+
+            if ((imageChoice && imageFile) || (!imageChoice && !imageFile)) {
+                alert("Please either select an image or upload your own image, but not both.");
+                return false;
+            }
+
+            if (imageFile && !realCategory) {
+                alert("Please enter the real category for the uploaded image.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </body>
 </html>
