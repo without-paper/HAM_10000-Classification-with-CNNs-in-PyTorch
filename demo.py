@@ -87,7 +87,7 @@ def home():
             choice = int(request.form["image_choice"])  # Get selected image index
             selected_img_path, real_category_name = images[choice]  # Get real category name
             predicted_category = predict_image(selected_img_path)
-            feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
+            feedback = "ResNet101: Great! I'm glad I was right :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
 
         elif 'image_file' in request.files:
             # Handle when user uploads their own image
@@ -105,7 +105,7 @@ def home():
                 else:
                     # Predict the uploaded image's category
                     predicted_category = predict_image(file_path)
-                    feedback = "ResNet101: Great! I'm glad I'm correct :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
+                    feedback = "ResNet101: Great! I'm glad I was right :)" if real_category_name == predicted_category else "ResNet101: Oops :( I hope I can do better next time"
 
     # Convert image paths to URLs for web display
     image_urls = [f"/eval/{os.path.basename(os.path.dirname(img[0]))}/{os.path.basename(img[0])}" for img in images]
