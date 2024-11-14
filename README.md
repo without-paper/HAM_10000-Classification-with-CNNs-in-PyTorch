@@ -12,7 +12,7 @@ Skin cancer remains a substantial public health issue worldwide, with early dete
 This project seeks to analyze how dataset size and neural network complexity impact the accuracy of skin cancer image classification. By examining the relationship between dataset scale and model architecture, the project aims to offer healthcare providers more effective automated tools for skin cancer detection, potentially easing the workload of dermatologists and enhancing patient outcomes.
 
 ## Technologies and Tools
-- **Dataset**: HAM10000 [^1][^2]
+- **Dataset**: HAM10000 [1][2]
 - **Programming Language**: Python 3.8
 - **Deep Learning Frameworks**:
   - PyTorch:
@@ -31,5 +31,5 @@ This project seeks to analyze how dataset size and neural network complexity imp
 This study evaluated the performance of eight deep neural networks in skin cancer image classification using the HAM10000 dataset. Results highlighted the complex interaction among data size, model complexity, and computational requirements, substantiating the relevance of neural scaling laws to this domain. Models were trained on dataset subsets ranging from 1% to 100%, with the highest average accuracy, 85.09%, achieved using a 5% dataset (1,002 images). Notably, ResNet101 trained on the full dataset (100%) and ResNet152 trained on a 5% subset achieved top accuracies of 90.07% and 90.02%, respectively. The findings suggest that both dataset size and model complexity substantially influence classification performance. For instance, ResNet101 and ResNet152 achieved higher accuracy with larger datasets, while AlexNet, ViT, and MLP-Mixer performed optimally on smaller datasets. This understanding of dataset size and model complexity implications can guide researchers in developing more efficient and accurate methods for skin cancer classification, ultimately supporting advances that could improve patient care and alleviate demands on healthcare professionals.
 
 ## References
-[^1]. Codella, N., Rotemberg, V., Tschandl, P., et al. "Skin Lesion Analysis Toward Melanoma Detection 2018: A Challenge Hosted by the International Skin Imaging Collaboration (ISIC)", 2018. [arXiv](https://arxiv.org/abs/1902.03368)
-[^2]. Tschandl, P., Rosendahl, C., & Kittler, H. "The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions". Sci. Data 5, 180161. [DOI](https://doi.org/10.1038/sdata.2018.161) (2018).
+[1]: Codella, N., Rotemberg, V., Tschandl, P., et al. "Skin Lesion Analysis Toward Melanoma Detection 2018: A Challenge Hosted by the International Skin Imaging Collaboration (ISIC)", 2018. [arXiv](https://arxiv.org/abs/1902.03368)
+[2]: Tschandl, P., Rosendahl, C., & Kittler, H. "The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions". Sci. Data 5, 180161. [DOI](https://doi.org/10.1038/sdata.2018.161) (2018).
