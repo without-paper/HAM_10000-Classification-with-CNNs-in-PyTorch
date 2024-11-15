@@ -123,6 +123,10 @@ if __name__ == '__main__':
 
     model_infos = {model_name: {'train_losses': [], 'test_losses': [], 'accuracies': []} for model_name in models}
 
+    # Loss function
+    # Maybe we can try weighted loss function or Focal Loss to solve the problem of imbalance dataset
+    # class_weights = torch.tensor([w1, w2, ..., wn]).to(device)
+    # criterion = nn.CrossEntropyLoss(weight=class_weights)
     criterion = nn.CrossEntropyLoss()
 
     num_epochs = 15
